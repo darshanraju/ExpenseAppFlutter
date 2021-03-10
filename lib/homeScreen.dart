@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   List<Transaction> transactions = [];
+  bool showAddExpenseModal = false;
 
   bool addTransaction(String newTitle, String newCost) {
     try {
@@ -48,42 +49,66 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (bCtx) {
+        return AddTransaction(addTransaction);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("App Bar"),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            color: Colors.grey[200],
-            height: 727,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Column(
-                    children: [
-                      AddTransaction(addTransaction),
-                      Container(
-                        height: 550,
-                        child: ListView.builder(
-                          itemBuilder: (buildContext, index) {
-                            return TransactionOverview(
-                              transactions[index],
-                              deleteTransaction,
-                            );
-                          },
-                          itemCount: transactions.length,
-                        ),
-                      )
-                    ],
-                  ),
+      appBar: AppBar(
+        title: Text("App Bar"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              startAddNewTransaction(context);
+            },
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey[200],
+          height: 720,
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 550,
+                      child: ListView.builder(
+                        itemBuilder: (buildContext, index) {
+                          return TransactionOverview(
+                            transactions[index],
+                            deleteTransaction,
+                          );
+                        },
+                        itemCount: transactions.length,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: showAddExpenseModal ? Icon(Icons.remove) : Icon(Icons.add),
+        onPressed: () {
+          startAddNewTransaction(context);
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }
