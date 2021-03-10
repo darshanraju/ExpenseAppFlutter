@@ -40,23 +40,35 @@ class HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text("App Bar"),
         ),
-        body: Container(
-          color: Colors.grey[200],
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Column(
-                  children: [
-                    AddTransaction(addTransaction),
-                    ...transactions
-                        .map((e) => TransactionOverview(e, deleteTransaction))
-                        .toList()
-                  ],
+        body: SingleChildScrollView(
+          child: Container(
+            color: Colors.grey[200],
+            height: 727,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
+                    children: [
+                      AddTransaction(addTransaction),
+                      Container(
+                        height: 550,
+                        child: ListView.builder(
+                          itemBuilder: (buildContext, index) {
+                            return TransactionOverview(
+                              transactions[index],
+                              deleteTransaction,
+                            );
+                          },
+                          itemCount: transactions.length,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

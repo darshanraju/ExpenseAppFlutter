@@ -46,7 +46,7 @@ class AddTransactionState extends State<AddTransaction> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(55, 12, 0, 0),
+                    margin: EdgeInsets.fromLTRB(80, 12, 0, 0),
                     width: 100,
                     child: FlatButton(
                       onPressed: () {
