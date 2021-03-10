@@ -50,8 +50,11 @@ class AddTransactionState extends State<AddTransaction> {
                     width: 100,
                     child: FlatButton(
                       onPressed: () {
-                        addTransaction(
-                            titleController.text, costController.text);
+                        if (addTransaction(
+                            titleController.text, costController.text)) {
+                          titleController.clear();
+                          costController.clear();
+                        }
                       },
                       child: Text("Add"),
                       color: Colors.blue[50],

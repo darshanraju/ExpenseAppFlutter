@@ -12,20 +12,34 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   List<Transaction> transactions = [];
 
-  void addTransaction(String newTitle, String newCost) {
-    setState(
-      () => {
-        transactions = [
-          ...transactions,
-          Transaction(
-            id: transactions.length.toString(),
-            title: newTitle,
-            amount: double.parse(newCost),
-            date: DateTime.now(),
-          )
-        ],
-      },
-    );
+  bool addTransaction(String newTitle, String newCost) {
+    try {
+      final cost = double.parse(newCost);
+      if (newTitle.isEmpty) {
+        throw "No input provided";
+      }
+      if (cost <= 0) {
+        throw "Provide a positive cost";
+      }
+      setState(
+        () => {
+          transactions = [
+            ...transactions,
+            Transaction(
+              id: transactions.length.toString(),
+              title: newTitle,
+              amount: double.parse(newCost),
+              date: DateTime.now(),
+            )
+          ],
+        },
+      );
+
+      return true;
+    } catch (error) {
+      print("Error caught: $error");
+      return false;
+    }
   }
 
   void deleteTransaction(String id) {
